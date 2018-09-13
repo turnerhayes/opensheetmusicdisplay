@@ -15,6 +15,7 @@ import {AJAX} from "./AJAX";
 import * as log from "loglevel";
 import {DrawingParametersEnum, DrawingParameters} from "../MusicalScore/Graphical/DrawingParameters";
 import {IOSMDOptions, OSMDOptions} from "./OSMDOptions";
+import {TestUtils} from "../../test/Util/TestUtils";
 
 export class OpenSheetMusicDisplay {
     /**
@@ -184,6 +185,29 @@ export class OpenSheetMusicDisplay {
             // Update the cursor position
             this.cursor.update();
         }
+    }
+
+    public loadMXL(): void {
+        const scoreName: string = "Mozart_Clarinet_Quintet_Excerpt.mxl";
+        const mxl: string = TestUtils.getMXL(scoreName);
+        this.load(mxl).then(
+            (_: {}) => {
+                this.render();
+            }
+        );
+    }
+
+    public loadMXLInline(): void {
+        const scoreName: string = "Mozart_Clarinet_Quintet_Excerpt.mxl";
+        const path: string = "test/data/" + scoreName;
+        const windowAny: any = window;
+        const rawStuff: any = windowAny.__raw__;
+        const mxl: string = windowAny[path];
+        this.load(mxl).then(
+            (_: {}) => {
+                this.render();
+            }
+        );
     }
 
     /**

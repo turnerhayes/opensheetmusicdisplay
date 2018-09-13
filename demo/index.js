@@ -101,8 +101,9 @@ import { OpenSheetMusicDisplay } from '../src/OpenSheetMusicDisplay/OpenSheetMus
 
         // Create zoom controls
         zoomIn.onclick = function () {
-            zoom *= 1.2;
-            scale();
+            openSheetMusicDisplay.loadMXL();
+            //zoom *= 1.2;
+            //scale();
         };
         zoomOut.onclick = function () {
             zoom /= 1.2;
