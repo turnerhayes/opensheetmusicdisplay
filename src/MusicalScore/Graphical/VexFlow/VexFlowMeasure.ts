@@ -434,7 +434,6 @@ export class VexFlowMeasure extends GraphicalMeasure {
 
             // check if this voice has just been found the first time:
             if (latestVoiceTimestamp === undefined) {
-
                 // if this voice is new, check for a gap from measure start to the start of the current voice entry:
                 const gapFromMeasureStart: Fraction = Fraction.minus(gNotesStartTimestamp, this.parentSourceMeasure.AbsoluteTimestamp);
                 if (gapFromMeasureStart.RealValue > 0) {
@@ -652,6 +651,10 @@ export class VexFlowMeasure extends GraphicalMeasure {
                     (gve as VexFlowVoiceEntry).vfStaveNote = VexFlowConverter.StaveNote(gve);
                 } else {
                     graceGVoiceEntriesBefore = []; // if note is not rendered, its grace notes might need to be removed
+                    const vfghost: Vex.Flow.GhostNote = VexFlowConverter.GhostNote(gve.notes[0].sourceNote.Length);
+                    //(gve as VexFlowVoiceEntry) = new VexFlowVoiceEntry(undefined, undefined);
+                    (gve as VexFlowVoiceEntry).vfStaveNote = vfghost;
+                    // maybe this needs to be done in getRestFilledVexFlowStaveNotesPerVoice()
                     continue;
                 }
                 if (graceGVoiceEntriesBefore.length > 0) {
@@ -665,7 +668,6 @@ export class VexFlowMeasure extends GraphicalMeasure {
                         }
                     }
                     const graceNoteGroup: Vex.Flow.GraceNoteGroup = new Vex.Flow.GraceNoteGroup(graceNotes, graceSlur);
-                    // (gve as VexFlowVoiceEntry).vfStaveNote.addModifier(0, graceNoteGroup.beamNotes()); // beams in handleBeam now
                     (gve as VexFlowVoiceEntry).vfStaveNote.addModifier(0, graceNoteGroup);
                     graceGVoiceEntriesBefore = [];
                 }
